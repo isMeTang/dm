@@ -1,0 +1,88 @@
+#register #list {
+    border: 1px solid #222d32;
+    margin: 0;
+    padding: 0;
+}
+.selectMonth {
+    margin-bottom: 1%;
+}
+.selectMonth .timeTxt {
+    font-weight: bold;
+}
+select.form-control.month {
+    width: 8%;
+    display: inline;
+    border-radius: 4px;
+}
+select.form-control.year {
+    width: 10%;
+    display: inline;
+    border-radius: 4px;
+}
+
+#register #list div {
+    width: 100%;
+}
+/*下划线分割*/
+#register #list .first {
+    border-bottom: 1px solid #222d32;
+}
+#register #list .dayRegister {
+    border-bottom: 1px solid #222d32;
+}
+#register #list .monthRegister {
+    border-bottom: 1px solid #222d32;
+}
+#register #list .provinceRegister {
+    border-bottom: 1px solid #222d32;
+}
+
+#register #list .peak {
+    float: left;
+    width: 22%;
+    margin-left: 2%;
+    margin-top: 4%;
+}
+#register #list .pie {
+    float: left;
+    margin-left: 2%;
+}
+#register #list .pyramid {
+    float: left;
+    margin-left: 2%;
+}
+
+#register #list .peak .hehe {
+    height: 66px;
+    width: 98%;
+    font-size: 16px;
+    color: #fff;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+#register #list .peak .he1 {
+    background: #228b22;
+    border: 1px solid #228b22;
+}
+
+#register #list .peak .he2 {
+    background: #48b;
+    border: 1px solid #48b;
+}
+
+#register #list .peak .he3 {
+    background: #ff7f50;
+    border: 1px solid #ff7f50;
+}
+
+#register #list .activeList {
+    width: 90%;
+    margin-left: 5%;
+}
+
+#register #list .activeList .box-tools h4 {
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+}

@@ -1,0 +1,285 @@
+<div class="col-xs-12" id="adminUser" ms-controller="adminUser">
+    <br/>
+    <div class="box">
+        <div class="box-header">
+            <button class="btn btn-default" style="width:120px;" ms-click="add">添加用户</button>
+            <div class="box-tools">
+                <div class="input-group" style="width: 150px;">
+                    <input type="text" name="table_search" class="form-control input-sm pull-right"
+                           placeholder="用户名模糊查找" ms-duplex="key" ms-keydown="enter($event)">
+                    <div class="input-group-btn" ms-click="find">
+                        <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.box-header -->
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-hover">
+                <tbody>
+                <tr>
+                    <th>ID</th>
+                    <th>用户名</th>
+                    <th>密码</th>
+                    <th>角色</th>
+                    <th>状态</th>
+                    <th>性别</th>
+                    <th>邮箱</th>
+                    <th>手机号码</th>
+                    <th>创建时间</th>
+                    <th>操作</th>
+                </tr>
+                <tr ms-repeat="accountData">
+                    <td>{{el.id}}</td>
+                    <td>{{el.name}}</td>
+                    <td>{{el.passWord}}</td>
+                    <td>{{el.roleId}}</td>
+                    <td><span class="label" ms-class="{{el.style}}">{{el.state}}</span></td>
+                    <td>{{el.sex}}</td>
+                    <td>{{el.email}}</td>
+                    <td>{{el.phone}}</td>
+                    <td>{{el.date | date("yyyy.MM.dd")}}</td>
+                    <td>
+                        <a class="label label-primary" ms-click="edit(el.id)">修改</a>
+                        <a class="label label-warning" ms-click="del(el.id)">删除</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div><!-- /.box-body -->
+    </div><!-- /.box -->
+    <div class="page_num">
+        <a ms-class="disabled:pageNo===1" ms-click="selectPage(-9999)">首页</a>
+        <a ms-class="disabled:pageNo===1" ms-click="selectPage(-1)">上页</a>
+        <a ms-class="disabled:pageNo===total" ms-click="selectPage(1)">下页</a>
+        <a ms-class="disabled:pageNo===total" ms-click="selectPage(9999)">末页</a>
+    </div>
+    <br/><br/><br/><br/><br/><br/>
+</div>
+
+<script>
+    $(function () {
+        avalon.ready(function () {
+            var adminUserVm = avalon.define({
+                $id: "adminUser",
+                flag: 111,
+                accountData: [],
+                pageNo: 1,         //页码
+                total: 1,           //总页数
+                key: '',
+                //判断是否手机号码
+                isMobile: function (phone) {
+                    var reg = /^[1][3578][0-9]{9}$/;
+                    if (reg.test(phone)) {
+                        return true;
+                    }
+                    return false;
+                },
+                //回车搜索
+                enter: function (event) {
+                    if (event.keyCode == 13) {
+                        adminUserVm.find();
+                    }
+                },
+                //搜索关键词
+                find: function(){
+                    if(adminUserVm.key == ''){
+                        adminUserVm.init();
+                    } else{
+                        $.myAjax({
+                            url: "/dm/account/find",
+                            type: "post",
+                            data: {'key': adminUserVm.key},
+                            onSuccess: function (data) {
+                                if (data.state == 1) {
+                                    adminUserVm.accountData = [];
+                                    $.each(data.obj, function (n, item) {
+                                        if (item.roleId == 1) {
+                                            item.roleId = "管理员";
+                                        } else if (item.roleId == 2) {
+                                            item.roleId = "分析师";
+                                        } else {
+                                            item.roleId = "合作伙伴";
+                                        }
+                                        if (item.state == 0) {
+                                            item.state = "禁用";
+                                            item.style = "label-danger";
+                                        } else {
+                                            item.state = "正常";
+                                            item.style = "label-success";
+                                        }
+                                        item.sex = item.sex == 1 ? '男' : '女';
+                                        adminUserVm.accountData.push(item);
+                                    });
+                                    var count = parseInt(data.obj.length);
+                                    count = count % 10 == 0 ? parseInt(count / 10) : parseInt(count / 10) + 1;
+                                    adminUserVm.total = count;
+                                    adminUserVm.pageNo = 1;
+                                }
+                            }
+                        });
+                    }
+                },
+                //首页，上下页，尾页
+                selectPage: function (value) {
+                    adminUserVm.pageNo += parseInt(value);
+                    if (adminUserVm.pageNo < 1) {
+                        adminUserVm.pageNo = 1;
+                    }
+                    if (adminUserVm.pageNo > adminUserVm.total) {
+                        adminUserVm.pageNo = adminUserVm.total;
+                    }
+                    adminUserVm.queryPage(adminUserVm.pageNo);
+                },
+                //查询数据
+                queryPage: function (pageNo) {
+                    $.myAjax({
+                        url: "/dm/account/userList",
+                        data: {'pageNo': pageNo},
+                        onSuccess: function (data) {
+                            if (data.state == 1) {
+                                adminUserVm.accountData = [];
+                                $.each(data.obj, function (n, item) {
+                                    if (item.roleId == 1) {
+                                        item.roleId = "管理员";
+                                    } else if (item.roleId == 2) {
+                                        item.roleId = "分析师";
+                                    } else {
+                                        item.roleId = "合作伙伴";
+                                    }
+                                    if (item.state == 0) {
+                                        item.state = "禁用";
+                                        item.style = "label-danger";
+                                    } else {
+                                        item.state = "正常";
+                                        item.style = "label-success";
+                                    }
+                                    item.sex = item.sex == 1 ? '男' : '女';
+                                    adminUserVm.accountData.push(item);
+                                });
+                            }
+                        }
+                    });
+                },
+                del: function(id){
+                    layer.confirm('确定删除？', {
+                        btn: ['确定', '取消'] //按钮
+                    }, function (index) {
+                        layer.close(index);
+                        $.myAjax({
+                            url: '/dm/account/delAccount',
+                            data: {'id':id},
+                            onSuccess: function (data) {
+                                if(data.state == 1){
+                                    layer.alert("删除成功");
+                                    adminUserVm.queryPage(adminUserVm.pageNo);
+                                }
+                            }
+                        });
+                    });
+                },
+                //初始化
+                init: function () {
+                    $.myAjax({
+                        url: "/dm/account/count",
+                        onSuccess: function (data) {
+                            if (data.state == 1) {
+                                var count = parseInt(data.obj);
+                                count = count % 10 == 0 ? parseInt(count / 10) : parseInt(count / 10) + 1;
+                                adminUserVm.total = count;
+                                adminUserVm.pageNo = 1;
+                            }
+                        }
+                    });
+                    adminUserVm.queryPage(1);
+                },
+                edit: function (id) {
+                    userId = id;
+                    adminUserVm.showDialog('html/admin/editUser.html', '修改用户信息', 'editAccount');
+                },
+                add: function () {
+                    adminUserVm.showDialog('html/admin/addUser.html', '添加用户', 'addAccount');
+                },
+                showDialog: function (baseUrl, title, url) {
+                    $.myAjax({
+                        url: baseUrl,
+                        dataType: "html",
+                        onSuccess: function (data) {
+                            layer.open({
+                                type: 1,
+                                content: data,
+                                scrollbar: false,
+                                area: ['390px', '420px'], //宽高
+                                title: [title, 'font-size:14px;color:#fff;font-weight:bold;background:#222d32;'],
+                                btn: ['保存', '取消'],
+                                skin: 'demo-class',
+                                yes: function () {
+                                    if (user.name == '') {
+                                        layer.alert("请输入用户名");
+                                        return;
+                                    }
+                                    if (user.passWord == '') {
+                                        layer.alert("请输入密码");
+                                        return;
+                                    }
+                                    if (user.roleId == '') {
+                                        layer.alert("请选择角色");
+                                        return;
+                                    }
+                                    if (user.state == '') {
+                                        layer.alert("请选择状态");
+                                        return;
+                                    }
+
+                                    if (user.sex == '') {
+                                        layer.alert("请选择性别");
+                                        return;
+                                    }
+                                    if (user.email == '') {
+                                        layer.alert("请输入邮箱");
+                                        return;
+                                    }
+                                    if (user.phone == '') {
+                                        layer.alert("请输入手机号码");
+                                        return;
+                                    }
+                                    if (!adminUserVm.isMobile(user.phone)) {
+                                        layer.alert("请输入有效的手机号码");
+                                        return;
+                                    }
+                                    $.myAjax({
+                                        url: '/dm/account/' + url,
+                                        type: 'post',
+                                        data: {
+                                            'id': user.id,
+                                            'name': user.name,
+                                            'passWord': user.passWord,
+                                            'roleId': user.roleId,
+                                            'email': user.email,
+                                            'phone': user.phone,
+                                            'state': user.state,
+                                            'sex': user.sex
+                                        },
+                                        onSuccess: function (data) {
+                                            if (data.state == 1) {
+                                                layer.closeAll();
+                                                adminUserVm.queryPage(adminUserVm.pageNo);
+                                                layer.alert("操作成功");
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            })
+            avalon.scan($('#adminUser')[0], adminUserVm);
+            adminUserVm.init();
+        })
+    });
+
+</script>
+<script>
+    var userId = '';
+    var user = {};
+</script>

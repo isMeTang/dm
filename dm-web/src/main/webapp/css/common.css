@@ -1,0 +1,21 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, button, textarea, p, blockquote, th, td,input,label{font-family: Microsoft YaHei;}
+/*页码样式*/
+.page_num{ width:100%; height:26px; line-height:26px; font-size:12px; color:#333; text-align:right; margin:15px -80px;}
+.page_num a{ width:auto; height:30px; line-height:30px; display:inline-block; padding:0 10px; margin:0 0 0 5px; color:#333; border:1px solid #ccc; text-decoration:none; vertical-align:middle;cursor:pointer;}
+.page_num a:hover{ border:1px solid #39C; color:#069;}
+.page_num a.disabled { color:#999; border:1px solid #eee; background:none; cursor:default;}
+
+/*layer自定义*/
+body .demo-class{font-family: Microsoft YaHei;}
+body .demo-class .layui-layer-btn {
+    text-align: center;
+}
+body .demo-class .layui-layer-btn0{background:#222d32;border-color:#222d32;color:#fff;}
+body .demo-class .layui-layer-btn1{background:#f8f8f8;border:1px solid #222d32;color:#222d32;}
+
+.clear{clear: both;}
+button.btn.down {
+    float: right;
+    margin-top: -30px;
+    margin-right: 28px;
+}

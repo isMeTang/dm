@@ -1,0 +1,67 @@
+<link rel="stylesheet" href="/css/analyze/behavior.css">
+<div class="col-xs-12" id="behavior" ms-controller="behavior">
+    <div class="selectMonth">
+        <span class="timeTxt">时间：</span>
+        <select class="form-control year" ms-change="changeYear" ms-duplex="year">
+            <option ms-repeat="yearData" ms-attr-value="el">{{el}}年</option>
+        </select>
+        <select class="form-control month" ms-change="changeMonth"  ms-duplex="month">
+            <option ms-repeat="monthData" ms-attr-value="el">{{el}}月</option>
+        </select>
+    </div>
+    <div id="list">
+        <div class="first">
+            <div class="dash" id="dash" style="width:500px;height:280px;"></div>
+            <div class="peak">
+                <button class="hehe he1">本月被访问次数：<br/> {{visitSumForMonth}}人次</button>
+                <button class="hehe he2">本月总访问时长：<br/> {{timeSumForMonth}}小时</button>
+                <button class="hehe he3">用户访问时长：<br/> {{timeSumByUser}}小时</button>
+                <button class="hehe he4">访客访问时长：<br/> {{timeSumByOther}}小时</button>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <br/><br/>
+        <div class="daybehavior" id="daybehavior" style="height:350px;"></div>
+        <br/><br/>
+        <div class="timeVisit" id="timeVisit" style="height:350px;"></div>
+        <br/><br/>
+        <div class="osLine" id="osLine" style="height:350px;"></div>
+        <br/><br/>
+        <div class="behaviorList box">
+            <div class="box-tools">
+                <h4 class="center">用户行为情况明细表</h4>
+                <button class="btn btn-xs btn-info down" ms-click="down">一键导出</button>
+            </div>
+            <div class="box-body table-responsive no-padding">
+                <table class="table table-hover">
+                    <tbody>
+                    <tr>
+                        <th>用户ID</th>
+                        <th>时间</th>
+                        <th>在线时长</th>
+                        <th>访问方式</th>
+                        <th>使用系统</th>
+                        <th>访问者类型</th>
+                    </tr>
+                    <tr ms-repeat="behaviorData">
+                        <td>{{el.id}}</td>
+                        <td>{{el.date}}</td>
+                        <td>{{el.time}}小时</td>
+                        <td>{{el.intoType}}</td>
+                        <td>{{el.os}}</td>
+                        <td>{{el.isUser}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div><!-- /.box-body -->
+        </div>
+        <div class="page_num">
+            <a ms-class="disabled:pageNo<=1" ms-click="selectPage(-9999)">首页</a>
+            <a ms-class="disabled:pageNo<=1" ms-click="selectPage(-1)">上页</a>
+            <a ms-class="disabled:pageNo>=total" ms-click="selectPage(1)">下页</a>
+            <a ms-class="disabled:pageNo>=total" ms-click="selectPage(9999)">末页</a>
+        </div>
+        <br/><br/>
+    </div>
+</div>
+<script src="/js/analyze/behavior.js"></script>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>网络访问统计分析系统</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.5 -->
+    <link rel="stylesheet" href="libs/lte/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <!--<link rel="stylesheet" href="libs/lte/css/font-awesome.min.css">-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="libs/lte/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="libs/lte/css/_all-skins.min.css">
+    <link rel="stylesheet" href="css/login/user.css">
+    <link rel="stylesheet" href="css/common.css">
+
+    <script src="/libs/jquery-2.1.1.min.js"></script>
+    <script src="/js/common.js"></script>
+    <script type="text/javascript" src="/libs/layer/layer.js"></script>
+    <script type="text/javascript" src="/libs/echarts-all.js"></script>
+    <script type="text/javascript" src="/libs/avalon/avalon.js"></script>
+    <script type="text/javascript" src="/js/index.js"></script>
+  </head>
+  <body class="hold-transition skin-blue sidebar-mini" ms-controller="home">
+    <div class="wrapper">
+
+      <header class="main-header">
+        <!-- 首页链接 -->
+        <a href="" class="logo">
+          <!-- mini logo for sidebar mini 50x50 pixels -->
+          <span class="logo-mini"><b>D</b>M</span>
+          <!-- logo for regular state and mobile devices -->
+          <span class="logo-lg"><b>网络访问</b>分析系统</span>
+        </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top" role="navigation">
+          <!-- Sidebar toggle button-->
+          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+          </a>
+          <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+     
+              <!-- User Account: style can be found in dropdown.less -->
+              <li class="dropdown user user-menu">
+			   <!-- 上右侧用户信息、头像-->
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">     
+                  <strong class="hidden-xs">欢迎您:&nbsp;&nbsp;&nbsp;&nbsp;{{user.name}}</strong>
+                </a>
+              </li>
+			  <!-- Control Sidebar Toggle Button -->
+              <li>
+                <a href="#" ms-click="quit"><img src="images/lgout2.png" width="18px" height="18px" /></a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+      <!-- Left side column. contains the logo and sidebar -->
+      <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+          <!-- Sidebar user panel -->
+          <div class="user-panel">
+            <div class="pull-left image">
+              <img src="/images/avatar.jpg" class="img-circle" alt="头像" width="160px" height="160px">
+            </div>
+            <div class="pull-left info">
+              <p>{{roleName}}</p>
+              <a href="#"><i class="fa fa-circle text-success"></i> 在线</a>
+            </div>
+          </div>
+          <ul class="sidebar-menu">
+            <li class="active treeview"  ms-repeat="menuData">
+              <a href="#">
+                <i class="fa fa-dashboard"></i> <span>{{el.mainMenu.name}}</span> <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li ms-repeat-sub="el.subMenu" ms-click="subFuntion(sub)">
+                  <a href="#"><i class="fa fa-circle-o"></i>{{sub.name}}</a>
+                </li>
+              </ul>
+            </li>
+            <!--<li class="treeview">
+              <a href="#">
+                <i class="fa fa-pie-chart"></i>
+                <span>Charts</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li  class="active"><a href="#"><i class="fa fa-circle-o"></i> ChartJS</a></li>
+                <li><a href="#"><i class="fa fa-circle-o"></i> Morris</a></li>
+              </ul>
+            </li>  -->
+          </ul>
+        </section>
+        <!-- /.sidebar -->
+      </aside>
+
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+         <!-- Content Header (Page header) -->
+        <section class="content-header">
+ <!--         <h1 id="mainFunName">
+            系统管理
+          </h1>
+          <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active" id="subFunName">用户信息管理</li>
+          </ol>-->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+		</section>
+      </div>
+      <footer class="main-footer" style="text-align:center;">
+        <strong>广东药科大学. <a href="">唐泽谦</a>. 版权所有.</strong>
+      </footer>
+    </div><!-- ./wrapper -->
+
+    <!-- Bootstrap 3.3.5 -->
+    <script src="libs/lte/js/bootstrap.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="libs/lte/js/app.min.js"></script>
+  </body>
+</html>

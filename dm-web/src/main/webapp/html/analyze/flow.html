@@ -1,0 +1,63 @@
+<link rel="stylesheet" href="/css/analyze/flow.css">
+<div class="col-xs-12" id="flow" ms-controller="flow">
+    <div class="selectMonth">
+        <span class="timeTxt">时间：</span>
+        <select class="form-control year" ms-change="changeYear" ms-duplex="year">
+            <option ms-repeat="yearData" ms-attr-value="el">{{el}}年</option>
+        </select>
+        <select class="form-control month" ms-change="changeMonth"  ms-duplex="month">
+            <option ms-repeat="monthData" ms-attr-value="el">{{el}}月</option>
+        </select>
+    </div>
+    <div id="list">
+        <div class="first">
+            <div class="dash" id="dash" style="width:500px;height:250px;"></div>
+            <div class="peak">
+                <button class="hehe he1">页面A流量：<br/> {{page1}}</button>
+                <button class="hehe he2">页面B流量：<br/> {{page2}}</button>
+                <button class="hehe he3">页面C流量：<br/> {{page3}}</button>
+                <button class="hehe he4">页面D流量：<br/> {{page4}}</button>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <br/><br/>
+        <div class="dayflow" id="dayflow" style="height:350px;"></div>
+        <br/><br/>
+        <div class="provinceflow" id="provinceflow" style="height:500px;"></div>
+        <br/><br/>
+        <div class="flowList box">
+            <div class="box-tools">
+                <h4 class="center">月访问流量统计汇总表</h4>
+                <button class="btn btn-xs btn-info down" ms-click="down">一键导出</button>
+            </div>
+            <div class="box-body table-responsive no-padding">
+                <table class="table table-hover">
+                    <tbody>
+                    <tr>
+                        <th>ID</th>
+                        <th>省份</th>
+                        <th>时间</th>
+                        <th>页面</th>
+                        <th>流量值</th>
+                    </tr>
+                    <tr ms-repeat="flowData">
+                        <td>{{el.id}}</td>
+                        <td>{{el.kpi}}</td>
+                        <td>{{el.date}}</td>
+                        <td>{{el.pageName}}</td>
+                        <td>{{el.value}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div><!-- /.box-body -->
+        </div>
+        <div class="page_num">
+            <a ms-class="disabled:pageNo<=1" ms-click="selectPage(-9999)">首页</a>
+            <a ms-class="disabled:pageNo<=1" ms-click="selectPage(-1)">上页</a>
+            <a ms-class="disabled:pageNo>=total" ms-click="selectPage(1)">下页</a>
+            <a ms-class="disabled:pageNo>=total" ms-click="selectPage(9999)">末页</a>
+        </div>
+        <br/><br/>
+    </div>
+</div>
+<script src="/js/analyze/flow.js"></script>

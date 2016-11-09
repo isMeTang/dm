@@ -1,0 +1,290 @@
+<div class="col-xs-12" id="menu" ms-controller="menu">
+    <br/>
+    <div class="box">
+        <div class="box-header">
+            <button class="btn btn-default" style="width:120px;" ms-click="add">添加菜单</button>
+            <div class="box-tools">
+                <div class="input-group" style="width: 150px;">
+                    <input type="text" name="table_search" class="form-control input-sm pull-right"
+                           placeholder="菜单模糊查找" ms-duplex="key" ms-keydown="enter($event)">
+                    <div class="input-group-btn" ms-click="find">
+                        <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.box-header -->
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-hover">
+                <tbody>
+                <tr>
+                    <th>ID</th>
+                    <th>菜单名</th>
+                    <th>url</th>
+                    <th>状态</th>
+                    <th>级别</th>
+                    <th>所属模块</th>
+                    <th>创建时间</th>
+                    <th>操作</th>
+                </tr>
+                <tr ms-repeat="menuData">
+                    <td>{{el.id}}</td>
+                    <td>{{el.name}}</td>
+                    <td>{{el.url}}</td>
+                    <td><span class="label" ms-class="{{el.style}}">{{el.state}}</span></td>
+                    <td>{{el.level}}</td>
+                    <td>{{el.mode}}</td>
+                    <td>{{el.date | date("yyyy.MM.dd")}}</td>
+                    <td>
+                        <a class="label label-primary" ms-click="edit(el.id)">修改</a>
+                        <a class="label label-info" ms-click="setRole(el.id)">设置角色</a>
+                        <a class="label label-warning" ms-click="del(el.id)">删除</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div><!-- /.box-body -->
+    </div><!-- /.box -->
+    <div class="page_num">
+        <a ms-class="disabled:pageNo===1" ms-click="selectPage(-9999)">首页</a>
+        <a ms-class="disabled:pageNo===1" ms-click="selectPage(-1)">上页</a>
+        <a ms-class="disabled:pageNo===total" ms-click="selectPage(1)">下页</a>
+        <a ms-class="disabled:pageNo===total" ms-click="selectPage(9999)">末页</a>
+    </div>
+    <br/><br/><br/><br/><br/><br/>
+</div>
+
+<script>
+    $(function () {
+        avalon.ready(function () {
+            var menuVm = avalon.define({
+                $id: "menu",
+                menuData: [],
+                topMenu: [],
+                pageNo: 1,         //页码
+                total: 1,           //总页数
+                key: '',
+                //回车搜索
+                enter: function (event) {
+                    if (event.keyCode == 13) {
+                        menuVm.find();
+                    }
+                },
+                //搜索关键词
+                find: function () {
+                    if (menuVm.key == '') {
+                        menuVm.init();
+                    } else {
+                        $.myAjax({
+                                    url: "/dm/menu/find",
+                                    type: "post",
+                                    data: {'key': menuVm.key},
+                                    onSuccess: function (data) {
+                                        menuVm.menuData = [];
+                                        $.each(data.obj, function (n, item) {
+                                            if (item.state == 0) {
+                                                item.state = "禁用";
+                                                item.style = "label-danger";
+                                            } else {
+                                                item.state = "正常";
+                                                item.style = "label-success";
+                                            }
+                                            if (item.parentId == -1) {
+                                                item.level = "一级";
+                                                item.mode = "---";
+                                            } else {
+                                                item.level = "二级";
+                                                item.mode = menuVm.topMenu[item.parentId];
+                                            }
+                                            menuVm.menuData.push(item);
+                                        });
+                                        var count = parseInt(data.obj.length);
+                                        count = count % 10 == 0 ? parseInt(count / 10) : parseInt(count / 10) + 1;
+                                        menuVm.total = count;
+                                        menuVm.pageNo = 1;
+                                    }
+                                }
+                        );
+                    }
+                },
+                //首页，上下页，尾页
+                selectPage: function (value) {
+                    menuVm.pageNo += parseInt(value);
+                    if (menuVm.pageNo < 1) {
+                        menuVm.pageNo = 1;
+                    }
+                    if (menuVm.pageNo > menuVm.total) {
+                        menuVm.pageNo = menuVm.total;
+                    }
+                    menuVm.queryPage(menuVm.pageNo);
+                }
+                ,
+                //查询数据
+                queryPage: function (pageNo) {
+                    $.myAjax({
+                        url: "/dm/menu/menuList",
+                        data: {'pageNo': pageNo},
+                        onSuccess: function (data) {
+                            if (data.state == 1) {
+                                menuVm.menuData = [];
+                                $.each(data.obj, function (n, item) {
+                                    if (item.state == 0) {
+                                        item.state = "禁用";
+                                        item.style = "label-danger";
+                                    } else {
+                                        item.state = "正常";
+                                        item.style = "label-success";
+                                    }
+                                    if (item.parentId == -1) {
+                                        item.level = "一级";
+                                        item.mode = "---";
+                                    } else {
+                                        item.level = "二级";
+                                        item.mode = menuVm.topMenu[item.parentId];
+                                    }
+                                    menuVm.menuData.push(item);
+                                });
+                            }
+                        }
+                    });
+                }
+                ,
+                del: function (id) {
+                    layer.confirm('确定删除？', {
+                        btn: ['确定', '取消'] //按钮
+                    }, function (index) {
+                        layer.close(index);
+                        $.myAjax({
+                            url: '/dm/menu/delMenu',
+                            data: {'id': id},
+                            onSuccess: function (data) {
+                                if (data.state == 1) {
+                                    layer.alert("删除成功");
+                                    menuVm.queryPage(menuVm.pageNo);
+                                }
+                            }
+                        });
+                    });
+                },
+                edit: function (id) {
+                    menuId = id;
+                    menuVm.showDialog('html/admin/editMenu.html', '修改菜单信息', '390px', '325px', 'editMenu', menuVm.menuSure);
+                },
+                add: function () {
+                    menuVm.showDialog('html/admin/addMenu.html', '添加菜单', '390px', '325px', 'addMenu', menuVm.menuSure);
+                },
+                setRole: function (id) {
+                    menuId = id;
+                    menuVm.showDialog('html/admin/setRole.html', '设置菜单角色', '355px', '145px', 'setRole', menuVm.roleSure);
+                },
+                showDialog: function (baseUrl, title, width, height, url, func) {
+                    $.myAjax({
+                        url: baseUrl,
+                        dataType: "html",
+                        onSuccess: function (data) {
+                            layer.open({
+                                type: 1,
+                                content: data,
+                                scrollbar: false,
+                                area: [width, height], //宽高
+                                title: [title, 'font-size:14px;color:#fff;font-weight:bold;background:#222d32;'],
+                                btn: ['保存', '取消'],
+                                skin: 'demo-class',
+                                yes: function () {
+                                    func(url);
+                                }
+                            });
+                        }
+                    });
+                },
+                //菜单确定
+                menuSure: function (url) {
+                    if (menu.name == '') {
+                        layer.alert("请输入菜单名");
+                        return;
+                    }
+                    if (menu.url == '') {
+                        layer.alert("请输入URL链接");
+                        return;
+                    }
+                    if (menu.level == -1) {
+                        menu.parentId = -1;
+                    }
+                    $.myAjax({
+                        url: '/dm/menu/' + url,
+                        type: 'post',
+                        data: {
+                            'id': menu.id,
+                            'name': menu.name,
+                            'url': menu.url,
+                            'state': menu.state,
+                            'parentId': menu.parentId
+                        },
+                        onSuccess: function (data) {
+                            if (data.state == 1) {
+                                layer.closeAll();
+                                menuVm.queryPage(menuVm.pageNo);
+                                layer.alert("操作成功");
+                            }
+                        }
+                    });
+                },
+                //角色确定
+                roleSure: function (url) {
+                    var roleIds = "";
+                    $.each(role, function (n, item) {
+                        roleIds = roleIds + item + ",";
+                    });
+                    roleIds = roleIds.substring(0, roleIds.length - 1);
+                    $.myAjax({
+                        url: '/dm/menu/' + url,
+                        type: 'post',
+                        data: {
+                            'menuId': menuId,
+                            'roleIds': roleIds
+                        },
+                        onSuccess: function (data) {
+                            if (data.state != null) {
+                                layer.closeAll();
+                                layer.alert("操作成功");
+                            }
+                        }
+                    });
+                },
+                //初始化
+                init: function () {
+                    $.myAjax({
+                        url: "/dm/menu/count",
+                        onSuccess: function (data) {
+                            if (data.state == 1) {
+                                var count = parseInt(data.obj);
+                                count = count % 10 == 0 ? parseInt(count / 10) : parseInt(count / 10) + 1;
+                                menuVm.total = count;
+                                menuVm.pageNo = 1;
+                            }
+                        }
+                    });
+                    $.myAjax({
+                        url: "/dm/menu/topMenu",
+                        onSuccess: function (data) {
+                            if (data.state == 1) {
+                                $.each(data.obj, function (n, item) {
+                                    menuVm.topMenu[item.id] = item.name;
+                                })
+                                menuVm.queryPage(1);
+                            }
+                        }
+                    });
+                }
+            })
+            avalon.scan($('#menu')[0], menuVm);
+            menuVm.init();
+        })
+    })
+    ;
+
+</script>
+<script>
+    var menuId = '';
+    var menu = {};
+    var role = [];
+</script>

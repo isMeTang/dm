@@ -1,0 +1,181 @@
+<style>
+    .up-btn {
+        background: #72afd2;
+        color: #fff;
+        font-size: 18px;
+        text-align: center;
+    }
+
+    .uploadify-queue-item {
+        display: none;
+    }
+
+    #upload {
+        width: 160px;
+        height: 60px;
+        background: #99a4ac;
+        color: #fff;
+        font-size: 18px;
+        text-align: center;
+        border: none;
+        margin-left: 20px;
+    }
+
+    .fun {
+        margin-left: 30%;
+        margin-top: 6%;
+    }
+
+    .fun div {
+        float: left;
+    }
+
+    .fun button {
+        float: left;
+    }
+
+    .sel {
+        margin-left: 14%;
+        margin-top: 5%;
+    }
+
+    .sel div {
+        width: 18%;
+        float: left;
+        text-align: center;
+    }
+
+    .sel div button {
+        width: 120px;
+        height: 120px;
+        font-size: 16px;
+        border: none;
+        border-radius: 60px;
+        color: #fff;
+        text-align: center;
+        background: #99a4ac;
+    }
+
+    .sel .register {
+        background: #f39c12;
+    }
+
+</style>
+<script src="/libs/uploadify/jquery.uploadify.min.js"></script>
+<div id="pushData" ms-controller="pushData">
+    <div class="sel">
+        <div>
+            <button class="tab register" ms-click="selTab('#f39c12','register')">注册数据</button>
+        </div>
+        <div>
+            <button class="tab active" ms-click="selTab('#00a65a','active')">活跃数据</button>
+        </div>
+        <div>
+            <button class="tab behavior" ms-click="selTab('#dd4b39','behavior')">行为数据</button>
+        </div>
+        <div>
+            <button class="tab flow" ms-click="selTab('#00c0ef','flow')">流量数据</button>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="fun">
+        <button id="file">打开</button>
+        <button id="upload" ms-click="upload">数据导入</button>
+    </div>
+</div>
+<script>
+    $(function () {
+        avalon.ready(function () {
+            var pushDataVm = avalon.define({
+                $id: "pushData",
+                fileFlag: false,
+                key: 'register',
+                selTab: function (color, key) {
+                    $('.tab').css("background", "#99a4ac");
+                    $(this).css("background", color);
+                    pushDataVm.key = key;
+                },
+                upload: function () {
+                    if (pushDataVm.fileFlag) {
+                        $('#file').uploadify('upload');
+                    } else {
+                        layer.alert('请选择Excel文件');
+                    }
+                },
+                init: function () {
+                    $("#file").uploadify({
+                        'swf': "/libs/uploadify/uploadify.swf",
+                        'fileObjName': 'file',
+                        'uploader': 'dm/push/uploadFile',
+                        'auto': false,
+                        'removeTimeout': 0,
+                        'multi': true,
+                        'uploadLimit': 0,
+                        'fileSizeLimit': "50MB",
+                        'fileTypeDesc': '文件大小（不超过50M）',
+                        'fileTypeExts': "*.xls;*.xlsx",
+                        'progressData': 'percentage',
+                        'buttonText': '选择本地文件',
+                        'speed': 'percentage',
+                        'queueSizeLimit': 10,       //最大多文件上传数
+                        'width': 160,
+                        'height': 60,
+                        'buttonClass': "up-btn",
+                        'removeCompleted': true,
+                        'successTimeout': 60,
+                        'onFallback': function () {
+                            layer.alert(
+                                    '<h2>浏览器缺少Flash插件，请下载<a style="text-decoration: underline"  href="http://get.adobe.com/cn/flashplayer/" target="_blank">安装Flash Player</a></h2>',
+                                    {icon: 2}
+                            );
+                        },
+                        'onSelectError': function (file, errorCode, errorMsg) {
+                            switch (errorCode) {
+                                case SWFUpload.QUEUE_ERROR.QUEUE_LIMIT_EXCEEDED:
+                                    layer.alert("一次最多选择10个文件上传！");
+                                    break;
+                                case SWFUpload.QUEUE_ERROR.FILE_EXCEEDS_SIZE_LIMIT:
+                                    layer.alert("文件大小不超过50M！");
+                                    break;
+                                case SWFUpload.QUEUE_ERROR.ZERO_BYTE_FILE:
+                                    layer.alert("不能上传空字节文件！");
+                                    break;
+                                case SWFUpload.QUEUE_ERROR.INVALID_FILETYPE :
+                                    layer.alert("不支持此文件类型");
+                                    break;
+                                default:
+                                    layer.alert("上传失败");
+                                    break;
+                            }
+                        },
+                        'onSelect': function (file) {
+                            pushDataVm.fileFlag = true;
+                            $('#upload').css('background', '#e18cde');
+                        },
+                        'onUploadStart': function () {
+                            $("#file").uploadify("settings", "formData", {
+                                key: pushDataVm.key
+                            });
+                            loadIndex = layer.load(1, {
+                                shade: [0.3, '#000'],
+                                area: '64px'
+                            });
+                        },
+                        'onUploadSuccess': function (file, data, response) {
+                            layer.closeAll();
+                            var obj = JSON.parse(data);
+                            if (obj.state == 1) {
+                                layer.alert("入库成功");
+                            } else {
+                                layer.alert(obj.msg);
+                            }
+                        }
+                    });
+                }
+            })
+            avalon.scan($('#pushData')[0], pushDataVm);
+            pushDataVm.init();
+        })
+    });
+</script>
+

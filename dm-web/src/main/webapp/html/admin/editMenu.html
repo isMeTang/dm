@@ -1,0 +1,89 @@
+<style>
+    #editMenu th {
+        text-align: center;
+        vertical-align: middle;
+        border-right: 1px solid #ededed;
+    }
+</style>
+<div class="box-body table-responsive no-padding" id="editMenu" ms-controller="editMenu">
+    <table class="table table-hover">
+        <tbody>
+        <tr>
+            <th>菜单名</th>
+            <td><input type="text" class="form-control" ms-duplex="menu.name"/></td>
+        </tr>
+        <tr>
+            <th>url</th>
+            <td><input type="text" class="form-control" ms-duplex="menu.url"/></td>
+        </tr>
+        <tr>
+            <th>状态</th>
+            <td>
+                <label class="radio-inline">
+                    <input type="radio" name="stateLable" ms-duplex-string="menu.state" value="1">正常
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="stateLable" ms-duplex-string="menu.state" value="0">禁用
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <th>级别</th>
+            <td>
+                <label class="radio-inline">
+                    <input type="radio" name="sexLable" ms-duplex-string="menu.level" value="-1">一级
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="sexLable" ms-duplex-string="menu.level" value="0">二级
+                </label>
+            </td>
+        </tr>
+        <tr ms-if="menu.level == 0">
+            <th>所属模块</th>
+            <td>
+                <select class="form-control" ms-duplex-string="menu.parentId">
+                    <option ms-repeat="topMenuData" ms-attr-value="el.id">{{el.name}}</option>
+                </select>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div><!-- /.box-body -->
+<script>
+    $(function () {
+        avalon.ready(function () {
+            var editMenuVm = avalon.define({
+                $id: "editMenu",
+                menu: {},
+                topMenuData :[],
+                init: function () {
+                    $.myAjax({
+                        url: '/dm/menu/queryMenu',
+                        data: {
+                            'id': menuId
+                        },
+                        onSuccess: function (data) {
+                            if (data.state == 1) {
+                                data.obj.level = data.obj.parentId == -1 ? -1 : 0;
+                                editMenuVm.menu = data.obj;
+                                menu = editMenuVm.menu;
+                            }
+                        }
+                    });
+                    $.myAjax({
+                        url: "/dm/menu/topMenu",
+                        onSuccess: function (data) {
+                            if (data.state == 1) {
+                                editMenuVm.topMenuData = data.obj;
+                            }
+                        }
+                    });
+
+                }
+            })
+            avalon.scan($('#editMenu')[0], editMenuVm);
+            editMenuVm.init();
+        })
+    });
+
+</script>

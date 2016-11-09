@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.tang.dm.dao.analyze.IFlowDao">
+    <sql id="Base_Column_List">
+        id,
+        provinceId,
+        date,
+        pageName,
+        value
+    </sql>
+
+    <insert id="insertOne" parameterType="cn.tang.dm.domian.analyze.Flow">
+        INSERT INTO dm_analyze_flow_summary (
+        provinceId
+        ,date
+        ,pageName
+        ,value
+        ,kpi
+        ) VALUES (
+        #{provinceId}
+        ,#{date}
+        ,#{pageName}
+        ,#{value}
+        ,#{kpi}
+        )
+        <selectKey resultType="java.lang.Long" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS ID
+        </selectKey>
+    </insert>
+
+    <select id="queryOne" parameterType="java.util.Map" resultType="cn.tang.dm.domian.analyze.Flow">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM dm_analyze_flow_summary
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.kpi!=null">
+                AND kpi = #{condition.kpi}
+            </if>
+            <if test="condition.date!=null">
+                AND date = #{condition.date}
+            </if>
+            <if test="condition.startDate!=null">
+                <![CDATA[
+                  AND date >= #{condition.startDate}
+                ]]>
+            </if>
+            <if test="condition.endDate!=null">
+                <![CDATA[
+                  AND date <= #{condition.endDate}
+                ]]>
+            </if>
+            <if test="condition.provinceId!=null">
+                AND provinceId = #{condition.provinceId}
+            </if>
+            <if test="condition.pageName!=null">
+                AND pageName = #{condition.pageName}
+            </if>
+        </trim>
+        limit 0,1
+    </select>
+
+    <select id="queryList" parameterType="java.util.Map" resultType="cn.tang.dm.domian.analyze.Flow">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM dm_analyze_flow_summary
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.kpi!=null">
+                AND kpi = #{condition.kpi}
+            </if>
+            <if test="condition.date!=null">
+                AND date = #{condition.date}
+            </if>
+            <if test="condition.startDate!=null">
+                <![CDATA[
+                  AND date >= #{condition.startDate}
+                ]]>
+            </if>
+            <if test="condition.endDate!=null">
+                <![CDATA[
+                  AND date <= #{condition.endDate}
+                ]]>
+            </if>
+            <if test="condition.provinceId!=null">
+                AND provinceId = #{condition.provinceId}
+            </if>
+            <if test="condition.pageName!=null">
+                AND pageName = #{condition.pageName}
+            </if>
+        </trim>
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="queryPage" parameterType="java.util.Map" resultType="cn.tang.dm.domian.analyze.Flow">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM dm_analyze_flow_summary
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.kpi!=null">
+                AND kpi = #{condition.kpi}
+            </if>
+            <if test="condition.date!=null">
+                AND date = #{condition.date}
+            </if>
+            <if test="condition.startDate!=null">
+                <![CDATA[
+                  AND date >= #{condition.startDate}
+                ]]>
+            </if>
+            <if test="condition.endDate!=null">
+                <![CDATA[
+                  AND date <= #{condition.endDate}
+                ]]>
+            </if>
+            <if test="condition.provinceId!=null">
+                AND provinceId = #{condition.provinceId}
+            </if>
+            <if test="condition.pageName!=null">
+                AND pageName = #{condition.pageName}
+            </if>
+        </trim>
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+
+    <select id="count" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(id)
+        FROM dm_analyze_flow_summary
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.kpi!=null">
+                AND kpi = #{condition.kpi}
+            </if>
+            <if test="condition.date!=null">
+                AND date = #{condition.date}
+            </if>
+            <if test="condition.startDate!=null">
+                <![CDATA[
+                  AND date >= #{condition.startDate}
+                ]]>
+            </if>
+            <if test="condition.endDate!=null">
+                <![CDATA[
+                  AND date <= #{condition.endDate}
+                ]]>
+            </if>
+            <if test="condition.provinceId!=null">
+                AND provinceId = #{condition.provinceId}
+            </if>
+            <if test="condition.pageName!=null">
+                AND pageName = #{condition.pageName}
+            </if>
+        </trim>
+    </select>
+    <select id="queryAllYear" resultType="java.lang.Long">
+        SELECT DISTINCT(date)
+        FROM dm_analyze_flow_summary
+        WHERE kpi = #{kpi}
+        ORDER BY date DESC
+    </select>
+</mapper>

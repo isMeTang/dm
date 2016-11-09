@@ -1,0 +1,55 @@
+<style>
+    #setRole th {
+        text-align: center;
+        vertical-align: middle;
+        border-right: 1px solid #ededed;
+    }
+</style>
+<div class="box-body table-responsive no-padding" id="setRole" ms-controller="setRole">
+    <table class="table table-hover">
+        <tbody>
+        <tr>
+            <th>分配角色</th>
+            <td>
+                <label class="checkbox-inline">
+                    <input type="checkbox" ms-duplex-number="role" name="check" value="1">管理员
+                </label>
+                <label class="checkbox-inline">
+                    <input type="checkbox" ms-duplex-number="role" name="check" value="2">分析师
+                </label>
+                <label class="checkbox-inline">
+                    <input type="checkbox" ms-duplex-number="role" name="check" value="3">合作伙伴
+                </label>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div><!-- /.box-body -->
+<script>
+    $(function () {
+        avalon.ready(function () {
+            var setRoleVm = avalon.define({
+                $id: "setRole",
+                role: [],
+                init: function () {
+                    $.myAjax({
+                        url: "/dm/menu/getRoles",
+                        type: "get",
+                        data: {'menuId': menuId},
+                        onSuccess: function (data) {
+                            if (data.state == 1) {
+                                $.each(data.obj, function (n, item) {
+                                    setRoleVm.role.push(item.roleId);
+                                })
+                            }
+                            role = setRoleVm.role;
+                        }
+                    });
+
+                }
+            })
+            avalon.scan($('#setRole')[0], setRoleVm);
+            setRoleVm.init();
+        })
+    });
+</script>

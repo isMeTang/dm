@@ -1,0 +1,9 @@
+apply plugin: 'java'
+
+dependencies {
+    compile project(':dm-domain')
+    compile project(':dm-repo')
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile group: 'org.springframework', name: 'spring-test', version: "4.1.1.RELEASE"
+    compile ('org.springframework:spring-context:4.2.4.RELEASE')
+}

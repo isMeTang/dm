@@ -1,0 +1,87 @@
+<style>
+    #editUser th {
+        text-align: center;
+        vertical-align: middle;
+        border-right: 1px solid #ededed;
+    }
+</style>
+<div class="box-body table-responsive no-padding" id="editUser" ms-controller="editUser">
+    <table class="table table-hover">
+        <tbody>
+        <tr>
+        <tr>
+            <th>用户名</th>
+            <td><input type="text" class="form-control" ms-duplex="user.name"/></td>
+        </tr>
+        <th>密码</th>
+        <td><input type="text" class="form-control" ms-duplex="user.passWord"/></td>
+        </tr>
+        <th>角色</th>
+        <td>
+            <label class="radio-inline">
+                <input type="radio" name="roleLable" ms-duplex-string="user.roleId" value="1">管理员
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="roleLable" ms-duplex-string="user.roleId" value="2">分析师
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="roleLable" ms-duplex-string="user.roleId" value="3">合作伙伴
+            </label>
+        </td>
+        </tr>
+        <th>状态</th>
+        <td>
+            <label class="radio-inline">
+                <input type="radio" name="stateLable" ms-duplex-string="user.state" value="1">正常
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="stateLable" ms-duplex-string="user.state" value="0">禁用
+            </label>
+        </td>
+        </tr>
+        <th>性别</th>
+        <td>
+            <label class="radio-inline">
+                <input type="radio" name="sexLable" ms-duplex-string="user.sex" value="1">男
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="sexLable" ms-duplex-string="user.sex" value="0">女
+            </label>
+        </td>
+        </tr>
+        <th>邮箱</th>
+        <td><input type="text" class="form-control" ms-duplex="user.email"/></td>
+        </tr>
+        <th>手机号码</th>
+        <td><input type="text" class="form-control" ms-duplex="user.phone"/></td>
+        </tr>
+        </tbody>
+    </table>
+</div><!-- /.box-body -->
+<script>
+    $(function () {
+        avalon.ready(function () {
+            var editUserVm = avalon.define({
+                $id: "editUser",
+                user: {},
+                init: function () {
+                    $.myAjax({
+                        url: '/dm/account/queryUser',
+                        data: {
+                            'id': userId
+                        },
+                        onSuccess: function (data) {
+                            if (data.state == 1) {
+                                editUserVm.user = data.obj;
+                                user = editUserVm.user;
+                            }
+                        }
+                    });
+                }
+            })
+            avalon.scan($('#editUser')[0], editUserVm);
+            editUserVm.init();
+        })
+    });
+
+</script>

@@ -1,0 +1,7 @@
+rootProject.name = 'dm'
+include 'dm-domain'
+include 'dm-admin'
+include 'dm-repo'
+include 'dm-service'
+include 'dm-web'
+

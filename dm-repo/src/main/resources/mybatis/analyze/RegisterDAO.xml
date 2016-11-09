@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.tang.dm.dao.analyze.IRegisterDao">
+    <sql id="Base_Column_List">
+        id AS id,
+        province_id AS provinceId,
+        date AS date,
+        sex AS sex,
+        type_id AS typeId,
+        age AS age
+    </sql>
+
+    <insert id="insertOne" parameterType="cn.tang.dm.domian.analyze.Register">
+        INSERT INTO dm_analyze_register_detail (
+        province_id
+        ,date
+        ,sex
+        ,kpi
+        ,type_id
+        ,age
+        ) VALUES (
+        #{provinceId}
+        ,#{date}
+        ,#{sex}
+        ,#{kpi}
+        ,#{typeId}
+        ,#{age}
+        )
+        <selectKey resultType="java.lang.Long" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS ID
+        </selectKey>
+    </insert>
+
+    <select id="queryOne" parameterType="java.util.Map" resultType="cn.tang.dm.domian.analyze.Register">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM dm_analyze_register_detail
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.kpi!=null">
+                AND kpi = #{condition.kpi}
+            </if>
+            <if test="condition.date!=null">
+                AND date = #{condition.date}
+            </if>
+            <if test="condition.startDate!=null">
+                <![CDATA[
+                  AND date >= #{condition.startDate}
+                ]]>
+            </if>
+            <if test="condition.endDate!=null">
+                <![CDATA[
+                  AND date <= #{condition.endDate}
+                ]]>
+            </if>
+            <if test="condition.provinceId!=null">
+                AND province_id = #{condition.provinceId}
+            </if>
+            <if test="condition.sex!=null">
+                AND sex = #{condition.sex}
+            </if>
+            <if test="condition.age!=null">
+                AND age = #{condition.age}
+            </if>
+            <if test="condition.typeId!=null">
+                AND type_id = #{condition.typeId}
+            </if>
+        </trim>
+        limit 0,1
+    </select>
+
+    <select id="queryList" parameterType="java.util.Map" resultType="cn.tang.dm.domian.analyze.Register">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM dm_analyze_register_detail
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.kpi!=null">
+                AND kpi = #{condition.kpi}
+            </if>
+            <if test="condition.date!=null">
+                AND date = #{condition.date}
+            </if>
+            <if test="condition.startDate!=null">
+                <![CDATA[
+                  AND date >= #{condition.startDate}
+                ]]>
+            </if>
+            <if test="condition.endDate!=null">
+                <![CDATA[
+                  AND date <= #{condition.endDate}
+                ]]>
+            </if>
+            <if test="condition.provinceId!=null">
+                AND province_id = #{condition.provinceId}
+            </if>
+            <if test="condition.sex!=null">
+                AND sex = #{condition.sex}
+            </if>
+            <if test="condition.age!=null">
+                AND age = #{condition.age}
+            </if>
+            <if test="condition.typeId!=null">
+                AND type_id = #{condition.typeId}
+            </if>
+        </trim>
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="queryPage" parameterType="java.util.Map" resultType="cn.tang.dm.domian.analyze.Register">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM dm_analyze_register_detail
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.kpi!=null">
+                AND kpi = #{condition.kpi}
+            </if>
+            <if test="condition.date!=null">
+                AND date = #{condition.date}
+            </if>
+            <if test="condition.startDate!=null">
+                <![CDATA[
+                  AND date >= #{condition.startDate}
+                ]]>
+            </if>
+            <if test="condition.endDate!=null">
+                <![CDATA[
+                  AND date <= #{condition.endDate}
+                ]]>
+            </if>
+            <if test="condition.provinceId!=null">
+                AND province_id = #{condition.provinceId}
+            </if>
+            <if test="condition.sex!=null">
+                AND sex = #{condition.sex}
+            </if>
+            <if test="condition.age!=null">
+                AND age = #{condition.age}
+            </if>
+            <if test="condition.typeId!=null">
+                AND type_id = #{condition.typeId}
+            </if>
+        </trim>
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+
+    <select id="count" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(id)
+        FROM dm_analyze_register_detail
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.kpi!=null">
+                AND kpi = #{condition.kpi}
+            </if>
+            <if test="condition.date!=null">
+                AND date = #{condition.date}
+            </if>
+            <if test="condition.startDate!=null">
+                <![CDATA[
+                  AND date >= #{condition.startDate}
+                ]]>
+            </if>
+            <if test="condition.endDate!=null">
+                <![CDATA[
+                  AND date <= #{condition.endDate}
+                ]]>
+            </if>
+            <if test="condition.provinceId!=null">
+                AND province_id = #{condition.provinceId}
+            </if>
+            <if test="condition.sex!=null">
+                AND sex = #{condition.sex}
+            </if>
+            <if test="condition.age!=null">
+                AND age = #{condition.age}
+            </if>
+            <if test="condition.typeId!=null">
+                AND type_id = #{condition.typeId}
+            </if>
+        </trim>
+    </select>
+    <select id="queryAllYear" resultType="java.lang.Long">
+        SELECT DISTINCT(date)
+        FROM dm_analyze_register_detail
+        WHERE kpi = #{kpi}
+        ORDER BY date DESC
+    </select>
+    <select id="querySumForMonth" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT SUM(value)
+        FROM dm_analyze_register_summary
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.kpi!=null">
+                AND kpi = #{condition.kpi}
+            </if>
+            <if test="condition.date!=null">
+                AND date = #{condition.date}
+            </if>
+            <if test="condition.startDate!=null">
+                <![CDATA[
+                  AND date >= #{condition.startDate}
+                ]]>
+            </if>
+            <if test="condition.endDate!=null">
+                <![CDATA[
+                  AND date <= #{condition.endDate}
+                ]]>
+            </if>
+            <if test="condition.provinceId!=null">
+                AND province_id = #{condition.provinceId}
+            </if>
+        </trim>
+    </select>
+</mapper>

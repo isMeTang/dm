@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.tang.dm.dao.analyze.IBehaviorDao">
+    <sql id="Base_Column_List">
+        id,
+        time,
+        date,
+        os,
+        intoType,
+        isUser
+    </sql>
+
+    <insert id="insertOne" parameterType="cn.tang.dm.domian.analyze.Behavior">
+        INSERT INTO dm_analyze_behavior_detail (
+        kpi
+        ,date
+        ,time
+        ,os
+        ,intoType
+        ,isUser
+        ) VALUES (
+        #{kpi}
+        ,#{date}
+        ,#{time}
+        ,#{os}
+        ,#{intoType}
+        ,#{isUser}
+        )
+        <selectKey resultType="java.lang.Long" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS ID
+        </selectKey>
+    </insert>
+
+    <select id="queryOne" parameterType="java.util.Map" resultType="cn.tang.dm.domian.analyze.Behavior">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM dm_analyze_behavior_detail
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.kpi!=null">
+                AND kpi = #{condition.kpi}
+            </if>
+            <if test="condition.date!=null">
+                AND date = #{condition.date}
+            </if>
+            <if test="condition.startDate!=null">
+                <![CDATA[
+                  AND date >= #{condition.startDate}
+                ]]>
+            </if>
+            <if test="condition.endDate!=null">
+                <![CDATA[
+                  AND date <= #{condition.endDate}
+                ]]>
+            </if>
+            <if test="condition.os!=null">
+                AND os = #{condition.os}
+            </if>
+            <if test="condition.intoType!=null">
+                AND intoType = #{condition.intoType}
+            </if>
+            <if test="condition.isUser!=null">
+                AND isUser = #{condition.isUser}
+            </if>
+        </trim>
+        limit 0,1
+    </select>
+
+    <select id="queryList" parameterType="java.util.Map" resultType="cn.tang.dm.domian.analyze.Behavior">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM dm_analyze_behavior_detail
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.kpi!=null">
+                AND kpi = #{condition.kpi}
+            </if>
+            <if test="condition.date!=null">
+                AND date = #{condition.date}
+            </if>
+            <if test="condition.startDate!=null">
+                <![CDATA[
+                  AND date >= #{condition.startDate}
+                ]]>
+            </if>
+            <if test="condition.endDate!=null">
+                <![CDATA[
+                  AND date <= #{condition.endDate}
+                ]]>
+            </if>
+            <if test="condition.os!=null">
+                AND os = #{condition.os}
+            </if>
+            <if test="condition.intoType!=null">
+                AND intoType = #{condition.intoType}
+            </if>
+            <if test="condition.isUser!=null">
+                AND isUser = #{condition.isUser}
+            </if>
+        </trim>
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="queryPage" parameterType="java.util.Map" resultType="cn.tang.dm.domian.analyze.Behavior">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM dm_analyze_behavior_detail
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.kpi!=null">
+                AND kpi = #{condition.kpi}
+            </if>
+            <if test="condition.date!=null">
+                AND date = #{condition.date}
+            </if>
+            <if test="condition.startDate!=null">
+                <![CDATA[
+                  AND date >= #{condition.startDate}
+                ]]>
+            </if>
+            <if test="condition.endDate!=null">
+                <![CDATA[
+                  AND date <= #{condition.endDate}
+                ]]>
+            </if>
+            <if test="condition.os!=null">
+                AND os = #{condition.os}
+            </if>
+            <if test="condition.intoType!=null">
+                AND intoType = #{condition.intoType}
+            </if>
+            <if test="condition.isUser!=null">
+                AND isUser = #{condition.isUser}
+            </if>
+        </trim>
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+
+    <select id="count" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(id)
+        FROM dm_analyze_behavior_detail
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.kpi!=null">
+                AND kpi = #{condition.kpi}
+            </if>
+            <if test="condition.date!=null">
+                AND date = #{condition.date}
+            </if>
+            <if test="condition.startDate!=null">
+                <![CDATA[
+                  AND date >= #{condition.startDate}
+                ]]>
+            </if>
+            <if test="condition.endDate!=null">
+                <![CDATA[
+                  AND date <= #{condition.endDate}
+                ]]>
+            </if>
+            <if test="condition.os!=null">
+                AND os = #{condition.os}
+            </if>
+            <if test="condition.intoType!=null">
+                AND intoType = #{condition.intoType}
+            </if>
+            <if test="condition.isUser!=null">
+                AND isUser = #{condition.isUser}
+            </if>
+        </trim>
+    </select>
+
+</mapper>

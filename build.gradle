@@ -1,0 +1,32 @@
+allprojects {
+    group 'dm'
+    version '1.0-SNAPSHOT'
+
+    apply plugin: 'idea'
+    apply plugin: 'java'
+    apply plugin: 'war'
+
+    repositories {
+        //使用开源中国的maven仓库
+        maven { url 'http://maven.oschina.net/content/groups/public/' }
+    }
+}
+
+//sourceCompatibility = 1.7
+dependencies {
+    //导入本地的依赖包
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile project(':dm-web')
+    //从maven仓库导入依赖
+    compile ('org.springframework:spring-context:4.1.0.RELEASE',
+            'org.springframework:spring-tx:4.1.0.RELEASE',
+            'org.springframework:spring-web:4.1.0.RELEASE',
+            'org.springframework:spring-webmvc:4.1.0.RELEASE',
+            'org.springframework:spring-jdbc:4.1.0.RELEASE',
+            'com.alibaba:fastjson:1.2.7',
+            'org.mybatis:mybatis-spring:1.2.3',
+            'org.mybatis:mybatis:3.3.0',
+            'com.alibaba.druid:druid-wrapper:0.2.9',
+            "mysql:mysql-connector-java:5.1.24")
+}
+

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.tang.dm.dao.admin.IRoleDao">
+    <sql id="Base_Column_List">
+        id AS id,
+        name AS name,
+        state AS state
+    </sql>
+
+    <insert id="insertOne" parameterType="cn.tang.dm.domian.admin.Role">
+        INSERT INTO dm_sys_role (
+        name
+        ,state
+        ,create_time
+        ) VALUES (
+        #{name}
+        ,#{state}
+        ,#{date}
+        )
+        <selectKey resultType="java.lang.Long" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS ID
+        </selectKey>
+    </insert>
+
+    <update id="updateByMap" parameterType="java.util.Map">
+        UPDATE dm_sys_role
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="condition.name!=null">
+                name = #{condition.name},
+            </if>
+            <if test="condition.state!=null">
+                state = #{condition.state},
+            </if>
+            <if test="condition.date!=null">
+                create_time = #{condition.date},
+            </if>
+        </trim>
+        WHERE
+        id = #{condition.id}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE FROM dm_sys_role
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            AND id = #{id}
+        </trim>
+    </delete>
+
+    <select id="queryOne" parameterType="java.util.Map" resultType="cn.tang.dm.domian.admin.Role">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM dm_sys_role
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.name!=null">
+                AND name = #{condition.name}
+            </if>
+            <if test="condition.state!=null">
+                AND state = #{condition.state}
+            </if>
+            <if test="condition.date!=null">
+                AND create_time = #{condition.date}
+            </if>
+        </trim>
+        limit 0,1
+    </select>
+
+    <select id="queryList" parameterType="java.util.Map" resultType="cn.tang.dm.domian.admin.Role">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM dm_sys_role
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.name!=null">
+                AND name = #{condition.name}
+            </if>
+            <if test="condition.state!=null">
+                AND state = #{condition.state}
+            </if>
+            <if test="condition.date!=null">
+                AND create_time = #{condition.date}
+            </if>
+        </trim>
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="queryPage" parameterType="java.util.Map" resultType="cn.tang.dm.domian.admin.Role">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM dm_sys_role
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.name!=null">
+                name = #{condition.name}
+            </if>
+            <if test="condition.state!=null">
+                AND state = #{condition.state}
+            </if>
+            <if test="condition.date!=null">
+                AND create_time = #{condition.date}
+            </if>
+        </trim>
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+
+    <select id="count" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(id)
+        FROM dm_sys_role
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.name!=null">
+                AND name = #{condition.name}
+            </if>
+            <if test="condition.state!=null">
+                AND state = #{condition.state}
+            </if>
+            <if test="condition.date!=null">
+                AND create_time = #{condition.date}
+            </if>
+        </trim>
+    </select>
+
+    <select id="find" parameterType="java.util.Map" resultType="cn.tang.dm.domian.admin.Role">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM dm_sys_role
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.name != null">
+                name like '%${condition.name}%'
+            </if>
+        </trim>
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+</mapper>

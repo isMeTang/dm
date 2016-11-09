@@ -1,0 +1,100 @@
+#behavior #list {
+    border: 1px solid #222d32;
+    margin: 0;
+    padding: 0;
+}
+
+.selectMonth {
+    margin-bottom: 1%;
+}
+
+.selectMonth .timeTxt {
+    font-weight: bold;
+}
+
+select.form-control.month {
+    width: 8%;
+    display: inline;
+    border-radius: 4px;
+}
+
+select.form-control.year {
+    width: 10%;
+    display: inline;
+    border-radius: 4px;
+}
+
+#behavior #list div {
+    width: 100%;
+    /*height: 250px; border-bottom:1px solid #222d32;*/
+}
+
+#behavior #list .dash {
+    width: 50%;
+    float: left;
+    border: 0; /*border-right:1px solid #222d32;*/
+}
+
+#behavior #list .first {
+    border-bottom: 1px solid #222d32;
+}
+
+#behavior #list .daybehavior {
+    border-bottom: 1px solid #222d32;
+}
+
+#behavior #list .timeVisit {
+    border-bottom: 1px solid #222d32;
+}
+
+#behavior #list .osLine {
+    border-bottom: 1px solid #222d32;
+}
+
+#behavior #list .peak {
+    float: left;
+    width: 50%;
+    margin-left: 2%;
+    margin-top: 2%;
+}
+
+#behavior #list .peak .hehe {
+    height: 100px;
+    width: 40%;
+    font-size: 18px;
+    color: #fff;
+    margin-right: 10px;
+    margin-top: 10px;
+    border-radius:12px;
+}
+
+#behavior #list .peak .he1 {
+    background: #228b22;
+    border: 1px solid #228b22;
+}
+
+#behavior #list .peak .he2 {
+    background: #48b;
+    border: 1px solid #48b;
+}
+
+#behavior #list .peak .he3 {
+    background: #ff7f50;
+    border: 1px solid #ff7f50;
+}
+
+#behavior #list .peak .he4 {
+    background: #f9df33;
+    border: 1px solid #f9df33;
+}
+
+#behavior #list .behaviorList {
+    width: 90%;
+    margin-left: 5%;
+}
+
+#behavior #list .behaviorList .box-tools h4 {
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+}
